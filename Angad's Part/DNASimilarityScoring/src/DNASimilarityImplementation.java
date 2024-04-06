@@ -29,5 +29,17 @@ public class DNASimilarityImplementation {
         Y = y;
     }
 
+    public int assignScore(char n1, char n2) {
+        int penalty = -1;
+        int match = 1;
+        if (n1 == n2) {
+            return match;
+        }
+        else {
+            return penalty;
+        }
+    }
+
+
 }
 
