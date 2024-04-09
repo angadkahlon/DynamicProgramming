@@ -1,10 +1,10 @@
+# Group Members: 
+# Angad Kahlon - 300187930
+# Jasjeet Singh
+
 This is the last assignment/project (Assignment #3) and final for COMP 359 (Design and Analysis of Algorithms).
 
-Group Members:
-Angad Kahlon - 300187930
-Jasjeet Singh
-
-Angad's Part:
+# Angad's Part:
 
 A dynamic programming code implementation of measuring DNA/RNA Sequence Similarities for the final portion of the course COMP 359.
 
@@ -42,4 +42,6 @@ References:
 
 NCBI Virus. (2024). Nih.gov. https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/virus?SeqType_s=Nucleotide
 Treadway, A. (2018, November 28). How to measure DNA similarity with Python and Dynamic Programming - Open Source Automation. Open Source Automation. https://theautomatic.net/2018/11/28/how-to-measure-dna-similarity-with-python-and-dynamic-programming/ 
+
+# Jasjeet's Part:
 
