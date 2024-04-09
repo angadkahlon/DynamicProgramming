@@ -1,6 +1,6 @@
 # Group Members: 
 # Angad Kahlon - 300187930
-# Jasjeet Singh
+# Jasjeet Singh - 300188659
 
 This is the last assignment/project (Assignment #3) and final for COMP 359 (Design and Analysis of Algorithms).
 
@@ -44,4 +44,16 @@ NCBI Virus. (2024). Nih.gov. https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/viru
 Treadway, A. (2018, November 28). How to measure DNA similarity with Python and Dynamic Programming - Open Source Automation. Open Source Automation. https://theautomatic.net/2018/11/28/how-to-measure-dna-similarity-with-python-and-dynamic-programming/ 
 
 # Jasjeet's Part:
+
+Implementing Dynamic coding to calculate the minimum edit distance. Also Famously known as LeetCode Problem 72. 
+
+Main Idea:
+
+The main idea behind the minimum edit distance problem is to quantify the similarity between two strings by measuring the minimum number of operations required to transform one string into another. These operations typically include insertion, deletion, and substitution of individual characters.
+
+Background: 
+
+The problem is often framed in the context of computational linguistics and bioinformatics, where it is used for tasks such as spell checking, DNA sequencing, and natural language processing. By calculating the minimum edit distance between two strings, one can determine how similar or dissimilar they are and infer relationships or patterns between them.
+
+Dynamic programming algorithms, such as the Wagner-Fischer algorithm or the Levenshtein distance algorithm, are commonly used to efficiently compute the minimum edit distance between strings by breaking down the problem into smaller subproblems and reusing solutions to overlapping subproblems.
 
