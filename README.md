@@ -45,7 +45,7 @@ Treadway, A. (2018, November 28). How to measure DNA similarity with Python and 
 
 # Jasjeet's Part:
 
-Implementing Dynamic coding to calculate the minimum edit distance. Also Famously known as LeetCode Problem 72. 
+Implementing Dynamic coding to calculate the minimum edit distance. Also known as LeetCode Problem 72. 
 
 Main Idea:
 
