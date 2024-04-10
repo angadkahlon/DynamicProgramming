@@ -62,9 +62,9 @@
         inputPanel.setLayout(new GridLayout(3, 2));
         
         //Creating labels and input fields. Input fields already contain the DNA sequences 
-        JLabel XLabel = new JLabel("   Enter the first DNA Sequence:");
+        JLabel XLabel = new JLabel("   Enter the first DNA Sequence from 2023:");
         sequence1 = new JTextField("acttgggaaagagccacccccacattttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaattttagtag");
-        JLabel YLabel = new JLabel("   Enter the second DNA Sequence Y:");
+        JLabel YLabel = new JLabel("   Enter the second DNA Sequence from 2024:");
         sequence2 = new JTextField("acttggagccaccacattttttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaatttagta");
  
         inputPanel.add(XLabel);
@@ -138,6 +138,7 @@
             
             int firstChange = 0;
             int secondChange = 0;
+            int matches = 0;
  
             //Going through both X and Y sequences and assigning scores
             while(lenx>0 && leny>0){
@@ -150,6 +151,7 @@
                     alignedY = Y.charAt(leny-1) + alignedY;
                     lenx--;
                     leny--;
+                    matches++;
      
                 }
                 //If sequence X has an addition or different nucleotide
@@ -171,9 +173,12 @@
              
              //Similarity Calculatiom
 
+             double percent = Math.round(((double) matches / alignedX.length()) * 100.0);
+
             resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence \n\n");
             resultArea.append("Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
             resultArea.append("Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
+            resultArea.append("The similarity of the sequences is approximately: " + percent + "% similar");
         }
     }
  
