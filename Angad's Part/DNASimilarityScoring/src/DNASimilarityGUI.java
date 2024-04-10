@@ -34,56 +34,65 @@
  * 
  */
 
+ //Importing relevant stuff 
  import javax.swing.*;
  import java.awt.*;
  import java.awt.event.*;
  
  public class DNASimilarityGUI extends JFrame implements ActionListener {
-     private JTextField sequence1, sequence2;
-     private JButton alignButton;
-     private JTextArea resultArea;
-     private String X = new String();
-     private String Y = new String();
-     private static int plus = 1;
-     private static int minus = -1;
+    
+    //Creating private attributes for GUI and Code
+    private JTextField sequence1, sequence2;
+    private JButton button1;
+    private JTextArea resultArea;
+    private String X = new String();
+    private String Y = new String();
+    private static int plus = 1;
+    private static int minus = -1;
  
-     public DNASimilarityGUI() {
-         setTitle("DNA Similarity Alignment");
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setSize(500, 400);
-         setLocationRelativeTo(null);
+    //Method for GUI
+    public DNASimilarityGUI() {
+        //Setting properties (metadata) like title and size
+        setTitle("DNA Similarity Alignment");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 400);
+        setLocationRelativeTo(null);
  
-         JPanel inputPanel = new JPanel();
-         inputPanel.setLayout(new GridLayout(3, 2));
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(3, 2));
+        
+        //Creating labels and input fields. Input fields already contain the DNA sequences 
+        JLabel XLabel = new JLabel("   Enter the first DNA Sequence:");
+        sequence1 = new JTextField("acttgggaaagagccacccccacattttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaattttagtag");
+        JLabel YLabel = new JLabel("   Enter the second DNA Sequence Y:");
+        sequence2 = new JTextField("acttggagccaccacattttttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaatttagta");
  
-         JLabel XLabel = new JLabel("   Enter the first DNA Sequence:");
-         sequence1 = new JTextField("acttgggaaagagccacccccacattttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaattttagtag");
-         JLabel YLabel = new JLabel("   Enter the second DNA Sequence Y:");
-         sequence2 = new JTextField("acttggagccaccacattttttcacctacagtgaacaatgctagggagagctgcctatatggaagagccctaatgtgtaaaattaatttagta");
+        inputPanel.add(XLabel);
+        inputPanel.add(sequence1);
+        inputPanel.add(YLabel);
+        inputPanel.add(sequence2);
+        
+        //Creating a button to run code
+        button1 = new JButton("Run");
+        button1.addActionListener(this);
+        
+        //Creating area to present results
+        resultArea = new JTextArea();
+        resultArea.setEditable(false);
  
-         inputPanel.add(XLabel);
-         inputPanel.add(sequence1);
-         inputPanel.add(YLabel);
-         inputPanel.add(sequence2);
+        //Adding in scrolling to view entire DNA Sequences
+        JScrollPane scrollPane = new JScrollPane(resultArea);
  
-         alignButton = new JButton("Align Sequences");
-         alignButton.addActionListener(this);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(button1);
  
-         resultArea = new JTextArea();
-         resultArea.setEditable(false);
- 
-         JScrollPane scrollPane = new JScrollPane(resultArea);
- 
-         JPanel buttonPanel = new JPanel();
-         buttonPanel.add(alignButton);
- 
-         getContentPane().setLayout(new BorderLayout());
-         getContentPane().add(inputPanel, BorderLayout.NORTH);
-         getContentPane().add(scrollPane, BorderLayout.CENTER);
-         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-     }
-
-     public static int assignScore(char n1, char n2) {
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(inputPanel, BorderLayout.NORTH);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    }
+    //Method to assign score either +1, or -1 depending if nucleotide n1 aligns with nucleotide n2
+    public static int assignScore(char n1, char n2) {
         if (n1 == n2) {
             return plus; 
         } else {
@@ -91,80 +100,89 @@
         }
     }
  
-     public void actionPerformed(ActionEvent buttonPressed) {
-         if (buttonPressed.getSource() == alignButton) {
-             X = sequence1.getText();
-             Y = sequence2.getText();
+    //Method for aligning sequences and finding scores after button1 is pressed
+    public void actionPerformed(ActionEvent buttonPressed) {
+        //Checking if button has been pressed, and if it has setting the input values to new strings
+        if (buttonPressed.getSource() == button1) {
+            X = sequence1.getText();
+            Y = sequence2.getText();
                      
-             //initializing the matrix that will keep track of scores:
-             int[][] scoreMatrix = new int[X.length() + 1][Y.length() + 1];
-             for (int i=0; i<=X.length(); i++) {
-                 scoreMatrix[i][0] = minus*i;
-             }
-             for (int j = 0; j <= Y.length(); j++) {
-                 scoreMatrix[0][j] = minus * j;
-             }
-             int match;
-             int delete;
-             int insert;
+            //initializing the matrix that will keep track of scores:
+            int[][] scoreMatrix = new int[X.length() + 1][Y.length() + 1];
+            for (int i=0; i<=X.length(); i++) {
+                scoreMatrix[i][0] = minus*i;
+            }
+            for (int j = 0; j <= Y.length(); j++) {
+                scoreMatrix[0][j] = minus*j;
+            }
+            int match;
+            int delete;
+            int insert;
  
-             for (int i=1; i<=X.length(); i++) {
-                 for (int j=1; j<=Y.length(); j++) {
-                     match = scoreMatrix[i-1][j-1] + assignScore(X.charAt(i-1), Y.charAt(j-1));
-                     delete = scoreMatrix[i-1][j] + minus;
-                     insert = scoreMatrix[i][j-1] + minus;
-                     scoreMatrix[i][j] = Math.max(Math.max(match, delete), insert);
-                 }
-             }
+            //Assigning scores, based on an addition, deletion, or match in the sequences
+            for (int i=1; i<=X.length(); i++) {
+                for (int j=1; j<=Y.length(); j++) {
+                    match = scoreMatrix[i-1][j-1] + assignScore(X.charAt(i-1), Y.charAt(j-1));
+                    delete = scoreMatrix[i-1][j] + minus;
+                    insert = scoreMatrix[i][j-1] + minus;
+                    scoreMatrix[i][j] = Math.max(Math.max(match, delete), insert);
+                }
+            }
+            //Saving length of sequences in variables
+            int lenx = X.length();
+            int leny = Y.length();
  
-             int lenx = X.length();
-             int leny = Y.length();
+            //Creating new strings for aligned sequences
+            String alignedX = new String();
+            String alignedY = new String();
+            
+            int firstChange = 0;
+            int secondChange = 0;
  
-             String alignedX = new String();
-             String alignedY = new String();
+            //Going through both X and Y sequences and assigning scores
+            while(lenx>0 && leny>0){
+                int currentScore = scoreMatrix[lenx][leny];
+                int leftScore = scoreMatrix[lenx-1][leny];
  
-             int firstChange = 0;
-             int secondChange = 0;
- 
-             while(lenx>0 && leny>0){
-                 int currentScore = scoreMatrix[lenx][leny];
-                 int leftScore = scoreMatrix[lenx-1][leny];
- 
-                 if ((lenx > 0) && (leny > 0) && X.charAt(lenx-1) == Y.charAt(leny-1)){
-                     alignedX = X.charAt(lenx-1) + alignedX;
-                     alignedY = Y.charAt(leny-1) + alignedY;
-                     lenx--;
-                     leny--;
+                //If both match
+                if ((lenx > 0) && (leny > 0) && X.charAt(lenx-1) == Y.charAt(leny-1)){
+                    alignedX = X.charAt(lenx-1) + alignedX;
+                    alignedY = Y.charAt(leny-1) + alignedY;
+                    lenx--;
+                    leny--;
      
-                 }
-                 else if (lenx > 0 && (currentScore == leftScore + minus)){
-                     alignedX = X.charAt(lenx-1) + alignedX;
-                     alignedY = "-" + alignedY;
-                     lenx--;
-                     firstChange = firstChange + 1;
+                }
+                //If sequence X has an addition or different nucleotide
+                else if (lenx > 0 && (currentScore == leftScore + minus)){
+                    alignedX = X.charAt(lenx-1) + alignedX;
+                    alignedY = "-" + alignedY;
+                    lenx--;
+                    firstChange = firstChange + 1;
      
-                 }
-                 else {
-                     alignedX = "-" + alignedX;
-                     alignedY = Y.charAt(leny-1) + alignedY;
-                     leny--;
-                     secondChange = secondChange + 1;
-                 }
-             }
+                }
+                //If sequence Y has an addition or different nucleotide
+                else {
+                    alignedX = "-" + alignedX;
+                    alignedY = Y.charAt(leny-1) + alignedY;
+                    leny--;
+                    secondChange = secondChange + 1;
+                }
+            }
              
              //Similarity Calculatiom
 
-             resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence \n\n");
-             resultArea.append("Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
-             resultArea.append("Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
-         }
-     }
+            resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence \n\n");
+            resultArea.append("Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
+            resultArea.append("Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
+        }
+    }
  
-     public static void main(String[] args) {
-         SwingUtilities.invokeLater(() -> {
-             DNASimilarityGUI gui = new DNASimilarityGUI();
-             gui.setVisible(true);
-         });
-     }
- }
+    //Main Method to run everything
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            DNASimilarityGUI gui = new DNASimilarityGUI();
+            gui.setVisible(true);
+        });
+    }
+}
  
