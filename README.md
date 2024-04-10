@@ -57,3 +57,13 @@ The problem is often framed in the context of computational linguistics and bioi
 
 Dynamic programming algorithms, such as the Wagner-Fischer algorithm or the Levenshtein distance algorithm, are commonly used to efficiently compute the minimum edit distance between strings by breaking down the problem into smaller subproblems and reusing solutions to overlapping subproblems.
 
+My Work and Implementation:
+
+This code defines a function minDistance that calculates the minimum edit distance between two input strings word1 and word2. The minimum edit distance is the minimum number of operations (insertion, deletion, or substitution) required to transform one string into the other.
+
+References
+
+Jurafsky, D., & Martin, J. H. (2024, February 3). Speech and Language Processing (3rd ed. draft). Page 26. Link: https://web.stanford.edu/~jurafsky/slp3/
+Geeksforgeeks. Edit Distance. Link: https://www.geeksforgeeks.org/edit-distance-dp-5/
+
+
