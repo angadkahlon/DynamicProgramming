@@ -77,7 +77,7 @@
         button1 = new JButton("Run");
         button1.addActionListener(this);
 
-        //Creating a button to run code
+        //Creating a button to visualize each iteration of the sequences
         button2 = new JButton("Visualize each iteration");
         button2.addActionListener(this);
         
@@ -109,9 +109,10 @@
  
     //Method for aligning sequences and finding scores after button1 is pressed
     public void actionPerformed(ActionEvent buttonPressed) {
+        //If Visualize button was pressed then set a boolean variable v_ize to true and return a confirmation message to the user
         if (buttonPressed.getSource() == button2) {
             v_ize = true;
-            resultArea.append("Visualizing each iteration is ON \n");
+            resultArea.append("  Visualizing each iteration is ON \n");
         }
         //Checking if button has been pressed, and if it has setting the input values to new strings
         if (buttonPressed.getSource() == button1) {
@@ -147,6 +148,7 @@
             String alignedX = new String();
             String alignedY = new String();
             
+            //Save the number of changes in the first and second sequence along with the matches and iteration number
             int firstChange = 0;
             int secondChange = 0;
             int matches = 0;
@@ -181,32 +183,36 @@
                     leny--;
                     secondChange++;
                 }
+                /*If boolean variable v_ize is true then create new strings and set them to the current sequences and append the iteration number along with
+                * the current sequence state
+                */
                 if (v_ize) {
                     String AlignedX = alignedX;
                     String AlignedY = alignedY;
                     int iteration1 = iteration;
                     SwingUtilities.invokeLater(() -> {
-                        resultArea.append("\n\nIteration #" + iteration1 + ":");
+                        resultArea.append("\n\n  Iteration #" + iteration1 + ":");
                         resultArea.append("\n\n");
-                        resultArea.append(AlignedX + "\n\n");
-                        resultArea.append(AlignedY + "\n\n");
+                        resultArea.append("  " + AlignedX + "\n\n");
+                        resultArea.append("  " + AlignedY + "\n\n");
                         resultArea.append("\n");
                     });
                 }
+                //increment iteration
                 iteration++;
             }
              
-             //Similarity Calculatiom
-
+             //Similarity Calculatiom by calulating the total changes and the similarity percentage
              double percent = Math.round((double) matches / ((alignedX.length()+alignedY.length())/2) * 100.0);
              int totalChange = secondChange+firstChange;
 
-            resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence. \n\n");
-            resultArea.append("Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
-            resultArea.append("Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
-            resultArea.append("Total number of changes (additions, deletions) in between sequences: " + totalChange + "\n\n");
-            resultArea.append("Total number of matches in between sequences: " + matches + "\n\n");
-            resultArea.append("The similarity of the sequences is approximately: " + percent + "% similar\n\n");
+            //Print all results to GUI
+            resultArea.setText("  Aligned Sequences:\n\n  The '-' represent where there has been an addition or deletion in the sequence. \n\n");
+            resultArea.append("  Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
+            resultArea.append("  Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
+            resultArea.append("  Total number of changes (additions, deletions) in between sequences: " + totalChange + "\n\n");
+            resultArea.append("  Total number of matches in between sequences: " + matches + "\n\n");
+            resultArea.append("  The similarity of the sequences is approximately: " + percent + "% similar\n\n");
         }
     }
  
