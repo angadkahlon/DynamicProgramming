@@ -43,10 +43,11 @@
     
     //Creating private attributes for GUI and Code
     private JTextField sequence1, sequence2;
-    private JButton button1;
+    private JButton button1, button2;
     private JTextArea resultArea;
     private String X = new String();
     private String Y = new String();
+    private boolean v_ize = false;
     private static int plus = 1;
     private static int minus = -1;
  
@@ -71,10 +72,14 @@
         inputPanel.add(sequence1);
         inputPanel.add(YLabel);
         inputPanel.add(sequence2);
-        
+
         //Creating a button to run code
         button1 = new JButton("Run");
         button1.addActionListener(this);
+
+        //Creating a button to run code
+        button2 = new JButton("Visualize each iteration");
+        button2.addActionListener(this);
         
         //Creating area to present results
         resultArea = new JTextArea();
@@ -84,12 +89,14 @@
         JScrollPane scrollPane = new JScrollPane(resultArea);
  
         JPanel buttonPanel = new JPanel();
+        buttonPanel.add(button2);
         buttonPanel.add(button1);
  
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(inputPanel, BorderLayout.NORTH);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
     }
     //Method to assign score either +1, or -1 depending if nucleotide n1 aligns with nucleotide n2
     public static int assignScore(char n1, char n2) {
@@ -102,6 +109,10 @@
  
     //Method for aligning sequences and finding scores after button1 is pressed
     public void actionPerformed(ActionEvent buttonPressed) {
+        if (buttonPressed.getSource() == button2) {
+            v_ize = true;
+            resultArea.append("Visualizing each iteration is ON \n");
+        }
         //Checking if button has been pressed, and if it has setting the input values to new strings
         if (buttonPressed.getSource() == button1) {
             X = sequence1.getText();
@@ -139,6 +150,7 @@
             int firstChange = 0;
             int secondChange = 0;
             int matches = 0;
+            int iteration = 0;
  
             //Going through both X and Y sequences and assigning scores
             while(lenx>0 && leny>0){
@@ -159,7 +171,7 @@
                     alignedX = X.charAt(lenx-1) + alignedX;
                     alignedY = "-" + alignedY;
                     lenx--;
-                    firstChange = firstChange + 1;
+                    firstChange++;
      
                 }
                 //If sequence Y has an addition or different nucleotide
@@ -167,18 +179,34 @@
                     alignedX = "-" + alignedX;
                     alignedY = Y.charAt(leny-1) + alignedY;
                     leny--;
-                    secondChange = secondChange + 1;
+                    secondChange++;
                 }
+                if (v_ize) {
+                    String AlignedX = alignedX;
+                    String AlignedY = alignedY;
+                    int iteration1 = iteration;
+                    SwingUtilities.invokeLater(() -> {
+                        resultArea.append("\n\nIteration #" + iteration1 + ":");
+                        resultArea.append("\n\n");
+                        resultArea.append(AlignedX + "\n\n");
+                        resultArea.append(AlignedY + "\n\n");
+                        resultArea.append("\n");
+                    });
+                }
+                iteration++;
             }
              
              //Similarity Calculatiom
 
-             double percent = Math.round(((double) matches / alignedX.length()) * 100.0);
+             double percent = Math.round((double) matches / ((alignedX.length()+alignedY.length())/2) * 100.0);
+             int totalChange = secondChange+firstChange;
 
-            resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence \n\n");
+            resultArea.setText("Aligned Sequences:\n\nThe '-' represent where there has been an addition or deletion in the sequence. \n\n");
             resultArea.append("Aligned First DNA Sequence: " + alignedX.toString() + "\n\n");
             resultArea.append("Aligned Second DNA Sequence: " + alignedY.toString() + "\n\n");
-            resultArea.append("The similarity of the sequences is approximately: " + percent + "% similar");
+            resultArea.append("Total number of changes (additions, deletions) in between sequences: " + totalChange + "\n\n");
+            resultArea.append("Total number of matches in between sequences: " + matches + "\n\n");
+            resultArea.append("The similarity of the sequences is approximately: " + percent + "% similar\n\n");
         }
     }
  
